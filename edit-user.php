@@ -4,6 +4,26 @@
 <div class="container">
  <h2 class="pt-4">User Update</h2>
 
+
+ <?php
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    header("Location: index.php");
+} else {
+    $user_id = $_POST['val'];
+    $sql = 'SELECT * FROM users WHERE user_id = ?';
+    $stmt = mysqli_stmt_init($link);
+
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        die("Query failed");
+    } else {
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    }
+}
+?>
+
+
  <form class="py-2">
   <div class="form-group">
    <label for="username">Username</label>

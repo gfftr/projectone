@@ -81,8 +81,18 @@ if (!mysqli_stmt_prepare($stmt, $sql)) {
     <th><?php echo $user_id; ?></th>
     <td><?php echo $user_name; ?></td>
     <td><?php echo $user_email; ?></td>
-    <td><a href="index.php?edit=<?php echo $user_id; ?>">Edit</a></td>
-    <td><a href="index.php?del=<?php echo $user_id; ?>">Delete</a></td>
+    <td>
+     <form action="edit-user.php" method="POST">
+      <input type="hidden" name="val" value="<?php echo $user_id; ?>" />
+      <input type="submit" class="btn btn-link" name="edit" value="Edit" />
+     </form>
+    </td>
+    <td>
+     <form action="index.php" method="POST">
+      <input type="hidden" name="val" value="<?php echo $user_id; ?>" />
+      <input type="submit" class="btn btn-link" name="delete" value="Delete" />
+     </form>
+    </td>
    </tr>
 
    <?php
@@ -92,6 +102,35 @@ if (!mysqli_stmt_prepare($stmt, $sql)) {
 
   </tbody>
  </table>
+ <?php
+// if (isset($_GET['del'])) {
+//     $user_id = $_GET['del'];
+//     $sql = 'DELETE FROM users WHERE user_id = ?';
+//     $stmt = mysqli_stmt_init($link);
+//     if (!mysqli_stmt_prepare($stmt, $sql)) {
+//         die("FAIL");
+//     } else {
+//         mysqli_stmt_bind_param($stmt, 'i', $user_id);
+//         mysqli_stmt_execute($stmt);
+//         header("Location: http://localhost/php/pdo_blog/projectone/index.php");
+//     }
+// }
+
+if (isset($_POST['delete'])) {
+    $user_id = $_POST['val'];
+    $sql = 'DELETE FROM users WHERE user_id = ?';
+    $stmt = mysqli_stmt_init($link);
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        die("FAIL");
+    } else {
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);
+        mysqli_stmt_execute($stmt);
+        header("Location: http://localhost/php/pdo_blog/projectone/index.php");
+    }
+}
+
+?>
+
 </div>
 
 <?php require_once './includes/footer.php'?>
